@@ -3,8 +3,8 @@ name: game-image-studio
 description: |
   Load this skill only when the primary task is visual asset work for a game project.
   This includes character art, concept art, environment art, sprites, sprite sheets,
-  UI graphics, icons, image editing, reference management, style consistency, and
-  image quality review.
+  UI graphics, icons, image editing, reference management, style consistency, prompt
+  construction, image review, and asset persistence.
 
   Do NOT load this skill for frontend implementation (HTML/CSS/JavaScript/TypeScript,
   Svelte, React, Vue), backend work, databases, APIs, or infrastructure unless the
@@ -28,8 +28,21 @@ Read only the references needed for the task:
 - Image editing -> `references/image-editing.md`
 - Style rules and consistency -> `references/style-consistency.md`
 - Prompt construction -> `references/prompt-engineering.md`
+- Workflow dispatch -> `references/workflow.md`
 - Review and QA -> `references/image-review.md`
 - Asset persistence -> `references/asset-management.md`
+
+## Dispatch rules
+
+Use the most specific tool available.
+
+- Character asset -> `tools/generate-character.sh`
+- Environment asset -> `tools/generate-background.sh`
+- UI asset -> `tools/generate-ui.sh`
+- Icon asset -> `tools/generate-icon.sh`
+- General new image -> `tools/generate-image.sh`
+- Existing image modification -> `tools/edit-image.sh`
+- Human/manual review -> `tools/review-image.sh`
 
 ## Operating rules
 
@@ -46,6 +59,8 @@ Read only the references needed for the task:
 - `templates/environment_bible.yaml`
 - `templates/ui_bible.yaml`
 - `templates/asset_manifest.yaml`
+- `templates/prompt_context.yaml`
+- `templates/project_memory.yaml`
 
 ## Execution principle
 
