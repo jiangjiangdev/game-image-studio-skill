@@ -6,6 +6,8 @@ ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 source "$ROOT_DIR/lib/common.sh"
 # shellcheck source=lib/config.sh
 source "$ROOT_DIR/lib/config.sh"
+# shellcheck source=lib/openai.sh
+source "$ROOT_DIR/lib/openai.sh"
 # shellcheck source=lib/filesystem.sh
 source "$ROOT_DIR/lib/filesystem.sh"
 # shellcheck source=lib/metadata.sh
@@ -60,15 +62,43 @@ if [[ -z "$image" || -z "$prompt_text" || -z "$output" ]]; then
 fi
 
 ensure_parent_dir "$output"
-metadata_json=$(cat <<EOF
+metadata_json="$(build_metadata_json "$output" "$(image_provider_name)" "$(image_provider_model)" "${OPENAI_IMAGE_SIZE:-1024x1024}" "${OPENAI_IMAGE_QUALITY:-high}" "$prompt_text" "$(build_references_json "${references[@]:-}")")"
+write_metadata_json "$output" "$metadata_json" >/dev/null
+
+request_body="$(cat <<EOF
 {
-  "image": "${image}",
-  "output": "${output}",
-  "references": [$(printf '"%s",' "${references[@]:-}" | sed 's/,$//')],
-  "mode": "edit"
+  "model": "$(image_provider_model)",
+  "prompt": $(printf '%s' "$prompt_text" | python3 -c 'import json,sys; print(json.dumps(sys.stdin.read()))')
 }
 EOF
-)
-write_metadata_json "$output" "$metadata_json" >/dev/null
-log_warn "OpenAI image edit API call is not wired yet in this commit. Toolchain and metadata plumbing are ready."
-log_info "Prepared edited output path: $output"
+)"
+
+response="$(curl -sS "$(image_provider_base_url)/images/edits" \
+  -H "Authorization: Bearer $(image_provider_api_key)" \
+  -H 'Content-Type: application/json' \
+  -d "$request_body")"
+
+write_text_file "$output.response.json" "$response"
+image_url="$(printf '%s' "$response" | python3 - <<'PY'
+import json,sys
+obj=json.load(sys.stdin)
+items=obj.get('data') or []
+if not items:
+    raise SystemExit('No image data in response')
+first=items[0]
+print(first.get('url') or first.get('b64_json') or '')
+PY
+)"
+
+if [[ -z "$image_url" ]]; then
+  log_error "OpenAI edit response did not include an image url or b64_json"
+  exit 1
+fi
+
+if [[ "$image_url" == http* ]]; then
+  curl -sSLo "$output" "$image_url"
+else
+  printf '%s' "$image_url" | base64 --decode > "$output"
+fi
+
+log_info "Edited image written to $output"
