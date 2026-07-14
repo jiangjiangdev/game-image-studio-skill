@@ -1,0 +1,13 @@
+asset:
+  type: character
+  name: ""
+  purpose: ""
+style:
+  bible: templates/style_bible.yaml
+  version: ""
+references: []
+constraints: []
+output:
+  size: 1024x1024
+  quality: high
+  background: transparent
