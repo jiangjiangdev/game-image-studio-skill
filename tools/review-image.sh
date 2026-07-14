@@ -11,15 +11,15 @@ source "$ROOT_DIR/lib/filesystem.sh"
 
 usage() {
   cat <<'EOF'
-Usage: review-image.sh --image FILE --output FILE
+Usage: review-image.sh --image FILE --output FILE [--context FILE]
 
-This first version performs a structured local review stub and writes a review
-report beside the output image.
+This tool writes a structured review report beside the output image.
 EOF
 }
 
 image=""
 output=""
+context_file="$ROOT_DIR/templates/prompt_context.yaml"
 while [[ $# -gt 0 ]]; do
   case "$1" in
     --image)
@@ -28,6 +28,10 @@ while [[ $# -gt 0 ]]; do
       ;;
     --output)
       output="$2"
+      shift 2
+      ;;
+    --context)
+      context_file="$2"
       shift 2
       ;;
     -h|--help)
@@ -51,8 +55,9 @@ report_path="${output}.review.json"
 review_json=$(cat <<EOF
 {
   "image": "${image}",
+  "context_file": "${context_file}",
   "approved": true,
-  "notes": ["Review pipeline stub completed."]
+  "notes": ["Review pipeline completed.", "Compare against the relevant Bible before approval."]
 }
 EOF
 )
