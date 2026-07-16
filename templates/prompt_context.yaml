@@ -11,3 +11,4 @@ output:
   size: 1024x1024
   quality: high
   background: transparent
+  format: png
