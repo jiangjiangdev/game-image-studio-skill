@@ -6,11 +6,11 @@ ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 source "$ROOT_DIR/lib/common.sh"
 # shellcheck source=lib/config.sh
 source "$ROOT_DIR/lib/config.sh"
-# shellcheck source=lib/openai.sh
+# shellcheck source=lib.openai.sh
 source "$ROOT_DIR/lib/openai.sh"
-# shellcheck source=lib/filesystem.sh
+# shellcheck source=lib.filesystem.sh
 source "$ROOT_DIR/lib/filesystem.sh"
-# shellcheck source=lib/metadata.sh
+# shellcheck source=lib.metadata.sh
 source "$ROOT_DIR/lib/metadata.sh"
 
 usage() {
