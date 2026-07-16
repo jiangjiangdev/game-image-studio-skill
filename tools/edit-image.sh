@@ -62,9 +62,14 @@ if [[ -z "$image" || -z "$prompt_text" || -z "$output" ]]; then
 fi
 
 ensure_parent_dir "$output"
-metadata_json="$(build_metadata_json "$output" "$(image_provider_name)" "$(image_provider_model)" "${OPENAI_IMAGE_SIZE:-1024x1024}" "${OPENAI_IMAGE_QUALITY:-high}" "$prompt_text" "$(build_references_json "${references[@]:-}")")"
+prompt_tmp="${output}.prompt.txt"
+write_text_file "$prompt_tmp" "$prompt_text"
+
+references_json="$(build_references_json "${references[@]:-}")"
+metadata_json="$(build_metadata_json "$output" "$(image_provider_name)" "$(image_provider_model)" "${OPENAI_IMAGE_SIZE:-1024x1024}" "${OPENAI_IMAGE_QUALITY:-high}" "$prompt_text" "$references_json")"
 write_metadata_json "$output" "$metadata_json" >/dev/null
 
+request_log="$output.request.json"
 request_body="$(cat <<EOF
 {
   "model": "$(image_provider_model)",
@@ -72,13 +77,17 @@ request_body="$(cat <<EOF
 }
 EOF
 )"
+write_text_file "$request_log" "$request_body"
 
+log_info "Sending image edit request"
 response="$(curl -sS "$(image_provider_base_url)/images/edits" \
   -H "Authorization: Bearer $(image_provider_api_key)" \
   -H 'Content-Type: application/json' \
   -d "$request_body")"
 
-write_text_file "$output.response.json" "$response"
+response_log="$output.response.json"
+write_text_file "$response_log" "$response"
+
 image_url="$(printf '%s' "$response" | python3 - <<'PY'
 import json,sys
 obj=json.load(sys.stdin)
@@ -95,7 +104,7 @@ if [[ -z "$image_url" ]]; then
   exit 1
 fi
 
-if [[ "$image_url" == http* ]]; then
+if [[ "$image_url" == data:* || "$image_url" == http* ]]; then
   curl -sSLo "$output" "$image_url"
 else
   printf '%s' "$image_url" | base64 --decode > "$output"
