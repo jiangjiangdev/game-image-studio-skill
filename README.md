@@ -24,16 +24,27 @@ This project focuses on:
 - `lib/` — reusable shell helpers
 - `config/` — environment and default configuration
 
+## Current toolchain
+
+- `tools/generate-image.sh`
+- `tools/edit-image.sh`
+- `tools/review-image.sh`
+- `tools/generate-character.sh`
+- `tools/generate-background.sh`
+- `tools/generate-ui.sh`
+- `tools/generate-icon.sh`
+- `tools/build-prompt.sh`
+
 ## Design goal
 
 Claude should decide *what* to do, then invoke shell tools to perform image generation or editing.
 
-## Toolchain
+## Toolchain flow
 
-The current toolchain is designed so that Claude can:
-1. build a prompt from project knowledge
-2. call a shell tool
-3. receive an image file path back
-4. update the asset manifest or Bible after approval
+1. Read the relevant Bible and prompt context.
+2. Build the prompt.
+3. Call the shell tool.
+4. Save the image and metadata.
+5. Review and update the manifest or Bible after approval.
 
 The native Claude image path is intentionally not the primary renderer for this project.
