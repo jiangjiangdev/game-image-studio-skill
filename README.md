@@ -4,7 +4,6 @@ Single-entry Claude Code skill for game visual assets.
 
 ## Scope
 
-This project focuses on:
 - character art
 - environment art
 - UI graphics
@@ -17,12 +16,12 @@ This project focuses on:
 
 ## Layout
 
-- `SKILL.md` — entry router for Claude Code
+- `SKILL.md` — entry router
 - `references/` — routing and domain knowledge
 - `templates/` — project bibles and manifests
-- `tools/` — shell tools that call the OpenAI image API
+- `tools/` — shell tools for image work
 - `lib/` — reusable shell helpers
-- `config/` — environment and default configuration
+- `config/` — configuration
 
 ## Core tools
 
