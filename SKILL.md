@@ -1,13 +1,12 @@
 ---
 name: game-image-studio
 description: |
-  Load this skill only when the primary task is visual asset work for a game project.
+  Load this skill only when the primary task is game visual asset work.
   This includes character art, environment art, UI graphics, icons, sprites, image
   editing, style consistency, prompt construction, image review, and asset persistence.
 
-  Do NOT load this skill for frontend implementation (HTML/CSS/JavaScript/TypeScript,
-  Svelte, React, Vue), backend work, databases, APIs, or infrastructure unless the
-  main objective is game visual assets.
+  Do NOT load this skill for frontend implementation, backend work, databases, APIs,
+  or infrastructure unless the main objective is game visual assets.
 ---
 
 # game-image-studio
@@ -34,7 +33,7 @@ Use `references/` as the knowledge base and `tools/` as the execution layer.
 - Existing image modification -> `tools/edit-image.sh`
 - Manual review -> `tools/review-image.sh`
 
-## Operating rules
+## Rules
 
 1. Prefer project files over conversation memory.
 2. Use the most specific tool available.
