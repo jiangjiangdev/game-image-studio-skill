@@ -1,22 +1,22 @@
 # Image Editing
 
-Use this reference when the task modifies an existing image.
+Use when modifying an existing image.
 
-## When to load
-- Inpainting or outpainting
-- Fixing a generated image
-- Adding, removing, or changing parts of an asset
-- Making a sprite, icon, or UI graphic match the approved style
+## Load if
+- inpainting or outpainting
+- fixing a generated image
+- adding, removing, or changing parts of an asset
+- matching a sprite, icon, or UI graphic to the approved style
 
-## Required context
-- Source image
+## Need
+- source image
 - Style Bible
-- The relevant project Bible for the asset type
-- Any mask or reference images
+- the relevant project Bible
+- any mask or reference images
 
-## Workflow
-1. Identify the exact source asset.
-2. Gather the style rules that must remain unchanged.
-3. Build an edit prompt with explicit constraints.
+## Steps
+1. Identify the source asset.
+2. Keep the approved style rules unchanged.
+3. Build an edit prompt.
 4. Call `tools/edit-image.sh`.
-5. Validate the result and update the manifest if approved.
+5. Review and update the manifest if approved.
