@@ -28,31 +28,12 @@ load_project_config
 
 while [[ $# -gt 0 ]]; do
   case "$1" in
-    --image)
-      image="$2"
-      shift 2
-      ;;
-    --prompt)
-      prompt_text="$2"
-      shift 2
-      ;;
-    --reference)
-      references+=("$2")
-      shift 2
-      ;;
-    --output)
-      output="$2"
-      shift 2
-      ;;
-    -h|--help)
-      usage
-      exit 0
-      ;;
-    *)
-      log_error "Unknown argument: $1"
-      usage
-      exit 1
-      ;;
+    --image) image="$2"; shift 2 ;;
+    --prompt) prompt_text="$2"; shift 2 ;;
+    --reference) references+=("$2"); shift 2 ;;
+    --output) output="$2"; shift 2 ;;
+    -h|--help) usage; exit 0 ;;
+    *) log_error "Unknown argument: $1"; usage; exit 1 ;;
   esac
 done
 
