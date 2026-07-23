@@ -6,24 +6,16 @@ ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 source "$ROOT_DIR/lib/common.sh"
 # shellcheck source=lib/config.sh
 source "$ROOT_DIR/lib/config.sh"
-# shellcheck source=lib.openai.sh
+# shellcheck source=lib/openai.sh
 source "$ROOT_DIR/lib/openai.sh"
-# shellcheck source=lib.filesystem.sh
+# shellcheck source=lib/filesystem.sh
 source "$ROOT_DIR/lib/filesystem.sh"
-# shellcheck source=lib.metadata.sh
+# shellcheck source=lib/metadata.sh
 source "$ROOT_DIR/lib/metadata.sh"
 
 usage() {
   cat <<'EOF'
 Usage: generate-image.sh --prompt-file FILE --output FILE [--reference FILE]...
-
-Options:
-  --prompt-file FILE   Prompt text file
-  --prompt TEXT        Prompt text inline
-  --reference FILE     Reference image path (repeatable)
-  --output FILE        Output image path
-  --size VALUE         Output size, default from config
-  --quality VALUE      Output quality, default from config
 EOF
 }
 
@@ -38,39 +30,14 @@ load_project_config
 
 while [[ $# -gt 0 ]]; do
   case "$1" in
-    --prompt-file)
-      prompt_file="$2"
-      shift 2
-      ;;
-    --prompt)
-      prompt_text="$2"
-      shift 2
-      ;;
-    --reference)
-      references+=("$2")
-      shift 2
-      ;;
-    --output)
-      output="$2"
-      shift 2
-      ;;
-    --size)
-      size="$2"
-      shift 2
-      ;;
-    --quality)
-      quality="$2"
-      shift 2
-      ;;
-    -h|--help)
-      usage
-      exit 0
-      ;;
-    *)
-      log_error "Unknown argument: $1"
-      usage
-      exit 1
-      ;;
+    --prompt-file) prompt_file="$2"; shift 2 ;;
+    --prompt) prompt_text="$2"; shift 2 ;;
+    --reference) references+=("$2"); shift 2 ;;
+    --output) output="$2"; shift 2 ;;
+    --size) size="$2"; shift 2 ;;
+    --quality) quality="$2"; shift 2 ;;
+    -h|--help) usage; exit 0 ;;
+    *) log_error "Unknown argument: $1"; usage; exit 1 ;;
   esac
 done
 
