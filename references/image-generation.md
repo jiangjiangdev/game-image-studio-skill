@@ -1,28 +1,21 @@
 # Image Generation
 
-Use this reference when the task is to create a new image or a new variation of an existing game asset.
+Use when creating a new image or a style-matching variant.
 
-## When to load
-- New character art
-- New environment art
-- New props, items, icons, or UI art
-- Sprite creation
-- Sprite sheet creation
-- Variants that must preserve a project style
+## Load if
+- character art
+- environment art
+- props, items, icons, or UI art
+- sprites or sprite sheets
 
-## Required context
+## Need
 - Style Bible
-- Character Bible if the asset is character-related
-- Environment Bible if the asset is location-related
+- relevant project Bible
 - Asset Manifest
-- Any canonical reference images
+- canonical references if available
 
-## Workflow
-1. Gather the asset target and usage.
-2. Read the smallest set of project bibles needed.
-3. Build a prompt from those bibles.
-4. Call `tools/generate-image.sh`.
-5. Review the output and update the manifest.
-
-## Rule
-Do not ask Claude to generate the image directly. Use the shell tool.
+## Steps
+1. Read the smallest needed context.
+2. Build the prompt.
+3. Call `tools/generate-image.sh`.
+4. Review output and update the manifest.
