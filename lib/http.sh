@@ -7,7 +7,9 @@ source "$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)/common.sh"
 http_post_json() {
   local url="$1"
   local payload="$2"
+  shift 2
   curl -sS -X POST "$url" \
     -H 'Content-Type: application/json' \
+    "$@" \
     -d "$payload"
 }
