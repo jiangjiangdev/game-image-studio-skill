@@ -2,7 +2,8 @@
 set -euo pipefail
 
 project_root() {
-  cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd
+  local script_path="${BASH_SOURCE[1]:-${BASH_SOURCE[0]}}"
+  cd "$(dirname "$script_path")/.." && pwd
 }
 
 log_info() {
