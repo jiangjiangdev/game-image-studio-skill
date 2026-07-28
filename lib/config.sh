@@ -10,9 +10,6 @@ load_project_config() {
   if [[ -f "$root/config/image.env" ]]; then
     # shellcheck disable=SC1090
     source "$root/config/image.env"
-  elif [[ -f "$root/config/image.env.example" ]]; then
-    # shellcheck disable=SC1090
-    source "$root/config/image.env.example"
   fi
 }
 
